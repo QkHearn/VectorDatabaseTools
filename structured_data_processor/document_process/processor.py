@@ -41,8 +41,8 @@ def process_json_file(file_path):
 
         qa_pairs = []
         for item in data:
-            if isinstance(item, dict) and 'input' in item and 'output' in item:
-                question = item['input'][:512]
+            if isinstance(item, dict) and 'input' in item and 'output' in item and "instruction" in data:
+                question = (item['input']+item['instruction'])[:512]
                 answer = item['output'][:800]
                 qa_pairs.append((question, answer))
             else:
@@ -62,8 +62,8 @@ def process_jsonl_file(file_path):
             line = preprocess(line)
             
             data = json.loads(line.strip())
-            if isinstance(data, dict) and 'input' in data and 'output' in data:
-                question = data['input'][:512]
+            if isinstance(data, dict) and 'input' in data and 'output' in data and "instruction" in data:
+                question = (item['input']+item['instruction'])[:512]
                 answer = data['output'][:800]
                 qa_pairs.append((question, answer))
             else:
