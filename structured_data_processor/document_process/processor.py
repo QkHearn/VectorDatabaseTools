@@ -51,7 +51,6 @@ def process_json_file(file_path):
         return qa_pairs
     except Exception as e:
         return f"Error processing file: {e}"
-
 def process_jsonl_file(file_path):
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
@@ -115,7 +114,27 @@ def write_to_excel(qa_pairs, output_file):
         return f"Output written to {output_file}"
     except Exception as e:
         return f"Error writing to Excel file: {e}"
+def d2v(file_path, output_file='output.xlsx'):
+    if output_file == 'output.xlsx':
+        output_file = f"output-{time.time()}.xlsx"
+    if not os.path.isfile(file_path):
+        return "The provided path is not a valid file."
 
+    file_extension = os.path.splitext(file_path)[1].lower()
+
+    if file_extension == '.json':
+        result = process_json_file(file_path)
+    elif file_extension == '.jsonl':
+        result = process_jsonl_file(file_path)
+    elif file_extension == '.txt':
+        result = process_txt_file(file_path)
+    else:
+        return "File type not supported."
+
+    if isinstance(result, list):
+        return write_to_excel(result, output_file)
+    else:
+        return result
 def main():
     parser = argparse.ArgumentParser(description="Process a text, JSON, or JSONL file and output to an Excel file.")
     parser.add_argument('-f', '--file', type=str, required=True, help="Path to the input file.")
