@@ -41,9 +41,9 @@ def process_json_file(file_path):
 
         qa_pairs = []
         for item in data:
-            if isinstance(item, dict) and 'Question' in item and 'Answer' in item:
-                question = item['Question'][:512]
-                answer = item['Answer'][:800]
+            if isinstance(item, dict) and 'input' in item and 'output' in item:
+                question = item['input'][:512]
+                answer = item['output'][:800]
                 qa_pairs.append((question, answer))
             else:
                 return "Invalid JSON format: Each item should be a dictionary with 'Question' and 'Answer' keys."
@@ -62,9 +62,9 @@ def process_jsonl_file(file_path):
             line = preprocess(line)
             
             data = json.loads(line.strip())
-            if isinstance(data, dict) and 'Question' in data and 'Answer' in data:
-                question = data['Question'][:512]
-                answer = data['Answer'][:800]
+            if isinstance(data, dict) and 'input' in data and 'output' in data:
+                question = data['input'][:512]
+                answer = data['output'][:800]
                 qa_pairs.append((question, answer))
             else:
                 return "Invalid JSONL format: Each line should be a dictionary with 'Question' and 'Answer' keys."
